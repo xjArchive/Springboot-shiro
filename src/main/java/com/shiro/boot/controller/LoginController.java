@@ -9,6 +9,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -56,7 +57,7 @@ public class LoginController {
      * @param password 密码
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResultMap login(String username, String password) {
+    public ResultMap login(@RequestParam("username") String username,@RequestParam("password") String password) {
         // 从SecurityUtils里边创建一个 subject
         Subject subject = SecurityUtils.getSubject();
         // 在认证提交前准备 token（令牌）
@@ -65,7 +66,7 @@ public class LoginController {
         subject.login(token);
         //根据权限，指定返回数据
         String role = userMapper.getRole(username);
-        if ("user".equals(role)) {
+        if ("test".equals(role)) {
             return resultMap.success().message("欢迎登陆");
         }
         if ("admin".equals(role)) {
